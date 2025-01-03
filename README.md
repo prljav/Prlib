@@ -25,7 +25,7 @@ just do `tsc {file name}`
 The changes are sorted by priority, the first one being highest and the last lowest.
 
 - [x] Add a websocket server, allowing for the official web client to connect to the bot and make debugging and controling the bot much easier.
-- [ ] Publish to NPM.
+- [x] Publish to NPM.
 - [x] Keep the state of the bot, where it's at, it's food, stamina and similar. (stamina and food not done, but the coords and region are)
 - [ ] Add a better way to run popular commands, movement and chatting.
 - [ ] Easier way for making commands, maybe even built-in?
