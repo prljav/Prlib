@@ -1,0 +1,40 @@
+{
+  "name": "prlib",
+  "version": "0.0.0-development",
+  "description": "A library for writing bots in Procedural Realms.",
+  "scripts": {
+    "build": "tsup",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prljav/prlib"
+  },
+  "author": "prljav",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/prljav/prlib/issues"
+  },
+  "homepage": "https://github.com/prljav/prlib#readme",
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.13",
+    "semantic-release": "^24.2.1",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"}
+}
