@@ -1,6 +1,6 @@
 # Prlib
 ```bash
-npm install Prlib
+npm install @prljav/prlib
 ```
 ### Packet docs will (hopefully) come soon
 
