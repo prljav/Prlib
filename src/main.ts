@@ -67,6 +67,7 @@ class Bot {
   dispatchEvent(event: string, ...args: any[]) {
     if (!this.eventListeners[event]) return;
     for (const listener of this.eventListeners[event]) {
+      //@ts-ignore
       listener(...args);
     }
   }
