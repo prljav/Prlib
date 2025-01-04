@@ -12,12 +12,15 @@ class Bot {
   startTime: number
   options: BotOptions
   ready: boolean
-  botstate: BotState
+  botState: BotState
+
   constructor(options: BotOptions) {
-    this.botstate = { x: undefined, y: undefined, region: undefined };
+    this.botState = { x: undefined, y: undefined, region: undefined };
     this.options = options
+
     this.ready = false
     this.startTime = 0;
+
     this.ws = new WebSocket(PR_WS)
     this.ws.on("open", () => {
       this.ws.send(options.auth);
@@ -27,6 +30,7 @@ class Bot {
       this.parsePacket(JSON.parse(data));
 
     });
+
     if (this.options.debug === true) {
       console.info("Running in debug mode")
       this.wss = new WebSocketServer({ port: 8008, host: "127.0.0.1" });
@@ -45,36 +49,43 @@ class Bot {
     }
 
   }
+
   addEventListener(event: string, listener: EventListener) {
     if (!this.eventListeners[event]) {
       this.eventListeners[event] = [];
     }
     this.eventListeners[event].push(listener);
   }
+
   removeEventListener(event: string, listener: EventListener) {
     if (!this.eventListeners[event]) return;
     this.eventListeners[event] = this.eventListeners[event].filter(
       (l) => l !== listener
     );
   }
+
   dispatchEvent(event: string, ...args: any[]) {
     if (!this.eventListeners[event]) return;
     for (const listener of this.eventListeners[event]) {
       listener(...args);
     }
   }
+
   quit() {
     this.ws.close()
   }
+
   runCmd(cmd: string) {
     this.ws.send(JSON.stringify({ cmd: "cmd", msg: cmd }));
   }
+
   sendToClient(msg: string) {
     if (this.options.debug !== true) throw "Not in debug mode, cannot use sendToClient"
     this.wss?.clients.forEach((client) => {
       client.send(msg)
     })
   }
+
   parsePacket(packet: PacketType) {
     //parsing for the mitm ws server
     if (this.options.debug === true) {
@@ -87,15 +98,16 @@ class Bot {
       try {
         const desc = packet.msg.desc;
         const cleanedDesc = removeAnsiCodes(desc);
-        this.botstate.region = cleanedDesc.split(' | ')[1].trim()
+        this.botState.region = cleanedDesc.split(' | ')[1].trim()
         const numbers = cleanedDesc.match(/(?<=[ ,])\d+(?=[ ,])/g)
-        this.botstate.x = Number(numbers[0])
-        this.botstate.y = Number(numbers[1])
-        this.dispatchEvent("update", this.botstate)
+        this.botState.x = Number(numbers[0])
+        this.botState.y = Number(numbers[1])
+        this.dispatchEvent("update", this.botState)
       } catch (e) {
         console.warn(`Failed to update bot state, ${e}`)
       }
     }
+
     if ('cmd' in packet && packet.cmd === "token.success") {
       this.ready = true
       this.dispatchEvent("ready", packet)
@@ -104,6 +116,7 @@ class Bot {
     if ('cmd' in packet && this.options.events["all"]) {
       this.options.events["all"](packet)
     }
+
     if ('cmd' in packet && this.options.events[packet.cmd]) {
       this.options.events[packet.cmd](packet)
     }
