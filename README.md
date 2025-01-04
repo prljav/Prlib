@@ -18,7 +18,7 @@ or
 
 #### How to compile?
 
-just do `tsc {file name}`
+just do `npm run build`
 
 # TODO
 
