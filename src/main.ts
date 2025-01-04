@@ -79,6 +79,12 @@ class Bot {
   runCmd(cmd: string) {
     this.ws.send(JSON.stringify({ cmd: "cmd", msg: cmd }));
   }
+  sendToClient(msg: string) {
+    if (this.options.debug !== true) throw "Not in debug mode, cannot use sendToClient"
+    this.wss?.clients.forEach((client) => {
+      client.send(msg)
+    })
+  }
   parsePacket(packet: PacketType) {
     //parsing for the mitm ws server
     if (this.options.debug === true) {
