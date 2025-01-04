@@ -18,7 +18,7 @@ or
 
 #### How to compile?
 
-just do `tsc {file name}`
+just do `npm run build`
 
 # TODO
 
@@ -32,7 +32,7 @@ The changes are sorted by priority, the first one being highest and the last low
 
 # FAQ
 How do i use the debugging feature?
-1. Set up a proxy between you and PR, you want to degrade the connection to a HTTP one, so that you can connect to non secure websocket servers. (can be done extremely easy with Caddy, look it up ) (you can also do it by self hosting [the client](https://github.com/dinchak/procrealms-web-client/) yourself, but its easier to just proxy the official one)
+1. Set up a proxy between you and PR, you want to degrade the connection to a HTTP one, so that you can connect to non secure websocket servers. I am hosting a HTTP instance of a client [here](http://play.proceduralrealms.com.prljav.cc/), you _can_ use it, but i recommend you use your own, as you cannot trust me. It can be done extremely easily with Caddy, look it up (you can also do it by self hosting [the client](https://github.com/dinchak/procrealms-web-client/) yourself, but its easier to just proxy the official one)
 2. Make sure you enabled the debug flag when defining the bot.
 3. After that go to your proxied PR web client and open your dev console and go on the Network tab.
 4. Refresh the tab and click on the websocket connection that opened (if you cant find it select the WS filter)
