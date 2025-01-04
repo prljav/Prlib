@@ -12,7 +12,8 @@ interface BotOptions {
 interface BotState {
   x: number | undefined,
   y: number | undefined,
-  region: string | undefined
+  region: string | undefined,
+  map: string | undefined
 }
 const PR_WS = "wss://play.proceduralrealms.com/ws"
 class Bot {
@@ -24,7 +25,7 @@ class Bot {
   ready: boolean
   botstate: BotState
   constructor(options: BotOptions) {
-    this.botstate = { x: undefined, y: undefined, region: undefined };
+    this.botstate = { x: undefined, y: undefined, region: undefined, map: undefined };
     this.options = options
     this.ready = false
     this.startTime = 0;
@@ -93,8 +94,11 @@ class Bot {
       })
     }
     //end
+
     if ('cmd' in packet && packet.cmd === "room.describe") {
       try {
+        this.botstate.map = packet.msg.map.join('\n')
+
         const desc = packet.msg.desc;
         const cleanedDesc = removeAnsiCodes(desc);
         this.botstate.region = cleanedDesc.split(' | ')[1].trim()
