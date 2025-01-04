@@ -1,19 +1,9 @@
-import { WebSocket } from "ws"
-import { WebSocketServer } from 'ws';
+import { WebSocket, WebSocketServer } from "ws";
 
+import { BotOptions, BotState, PacketType } from "./types";
 import { removeAnsiCodes } from "./util";
-type EventListener = (...args: any[]) => void;
-type PacketType = Array<any> | Record<string, any>
-interface BotOptions {
-  auth: string,
-  events: Record<string, Function>,
-  debug?: boolean
-}
-interface BotState {
-  x: number | undefined,
-  y: number | undefined,
-  region: string | undefined
-}
+
+
 const PR_WS = "wss://play.proceduralrealms.com/ws"
 class Bot {
   private eventListeners: Record<string, EventListener[]> = {};
@@ -119,4 +109,5 @@ class Bot {
     }
   }
 }
-export { Bot, BotOptions, PacketType, BotState }
+
+export { Bot, BotOptions, BotState, PacketType };
