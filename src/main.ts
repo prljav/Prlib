@@ -91,7 +91,7 @@ class Bot {
       try {
         const desc = packet.msg.desc;
         const cleanedDesc = removeAnsiCodes(desc);
-        this.botstate.region = cleanedDesc.split(' | ')[1]
+        this.botstate.region = cleanedDesc.split(' | ')[1].trim()
         const numbers = cleanedDesc.match(/(?<=[ ,])\d+(?=[ ,])/g)
         this.botstate.x = Number(numbers[0])
         this.botstate.y = Number(numbers[1])
