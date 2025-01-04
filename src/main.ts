@@ -95,7 +95,9 @@ class Bot {
       })
     }
     //end
-    if ('cmd' in packet && packet.cmd === "room.describe") {
+    if (!('cmd' in packet)) return;
+
+    if (packet.cmd === "room.describe") {
       try {
         const desc = packet.msg.desc;
         const cleanedDesc = removeAnsiCodes(desc);
@@ -109,16 +111,16 @@ class Bot {
       }
     }
 
-    if ('cmd' in packet && packet.cmd === "token.success") {
+    if (packet.cmd === "token.success") {
       this.ready = true
       this.dispatchEvent("ready", packet)
     }
 
-    if ('cmd' in packet && this.options.events["all"]) {
+    if (this.options.events["all"]) {
       this.options.events["all"](packet)
     }
 
-    if ('cmd' in packet && this.options.events[packet.cmd]) {
+    if (this.options.events[packet.cmd]) {
       this.options.events[packet.cmd](packet)
     }
   }
