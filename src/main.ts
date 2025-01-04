@@ -123,4 +123,4 @@ class Bot {
     }
   }
 }
-export { Bot, BotOptions, PacketType, BotState }
+export { Bot, BotOptions, PacketType, BotState, removeAnsiCodes }
