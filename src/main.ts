@@ -8,7 +8,7 @@ export class Bot extends BotBase {
 		return this.websocket;
 	}
 	get wss() {
-		return this.websocket;
+		return this.websocketServer;
 	}
 	get ready() {
 		return this.isReady;
