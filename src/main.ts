@@ -1,4 +1,4 @@
-import { WebSocket, type WebSocketServer } from "ws";
+import { WebSocket, WebSocketServer } from "ws";
 
 import { EventManager } from "./event";
 import type { BotOptions, BotState, PacketType } from "./types";
@@ -28,6 +28,10 @@ export class Bot extends EventManager {
 		this.options = options;
 		this.websocket = new WebSocket(PR_WS);
 
+		if (this.options.debug === true) {
+			this.runInDebugMode();
+		}
+
 		// Initialize the WebSocket connection
 		this.websocket.on("open", () => {
 			this.websocket.send(options.auth);
@@ -36,6 +40,29 @@ export class Bot extends EventManager {
 
 		this.websocket.on("message", (data: string) => {
 			this.parsePacket(JSON.parse(data));
+		});
+	}
+
+	runInDebugMode() {
+		console.info("Running in debug mode");
+		this.websocketServer = new WebSocketServer({
+			port: 8008,
+			host: "127.0.0.1",
+		});
+		this.websocketServer.on("connection", (client) => {
+			console.log("client connected");
+			client.on("message", (_data: unknown) => {
+				const data = _data.toString();
+				const reqId = JSON.parse(data).reqId;
+				if (JSON.parse(data).cmd === "token") {
+					return setTimeout(() => {
+						client.send(
+							`{"cmd":"token.success","msg":{"name":"Prljav","token":"sadsads"},"reqId":"${reqId}"}`,
+						);
+					}, 500);
+				}
+				this.websocket.send(data, { binary: false });
+			});
 		});
 	}
 
