@@ -1,10 +1,12 @@
 import { WebSocket, type WebSocketServer } from "ws";
-import type { BotOptions, BotState } from "./types";
+
+import { EventManager } from "./event";
+import type { BotOptions, BotState, PacketType } from "./types";
+import { removeAnsiCodes } from "./util";
 
 const PR_WS = "wss://play.proceduralrealms.com/ws";
 
-export class Bot {
-	eventListeners: Record<string, EventListener[]> = {};
+export class Bot extends EventManager {
 	websocket: WebSocket;
 	websocketServer: WebSocketServer;
 
@@ -15,6 +17,7 @@ export class Bot {
 	botState: BotState;
 
 	constructor(options: BotOptions) {
+		super();
 		this.botState = {
 			x: undefined,
 			y: undefined,
@@ -31,6 +34,65 @@ export class Bot {
 			this.startTime = Date.now();
 		});
 
-		this.websocket.on("message", (data: string) => {});
+		this.websocket.on("message", (data: string) => {
+			this.parsePacket(JSON.parse(data));
+		});
+	}
+
+	quit() {
+		this.websocket.close();
+	}
+
+	runCmd(cmd: string) {
+		this.websocket.send(JSON.stringify({ cmd: "cmd", msg: cmd }));
+	}
+
+	parsePacket(packet: PacketType) {
+		//parsing for the mitm ws server
+		if (this.options.debug === true) {
+			this.websocketServer?.clients.forEach((client) => {
+				client.send(JSON.stringify(packet));
+			});
+		}
+		//end
+
+		if ("cmd" in packet && packet.cmd === "room.describe") {
+			try {
+				this.botState.map = packet.msg.map.join("\n");
+
+				const desc = packet.msg.desc;
+				const cleanedDesc = removeAnsiCodes(desc);
+				this.botState.region = cleanedDesc.split(" | ")[1].trim();
+				const numbers = cleanedDesc.match(/(?<=[ ,])\d+(?=[ ,])/g);
+				this.botState.x = Number(numbers[0]);
+				this.botState.y = Number(numbers[1]);
+				this.dispatchEvent("update", this.botState);
+			} catch (e) {
+				console.warn(`Failed to update bot state, ${e}`);
+			}
+		}
+
+		if (!("cmd" in packet)) return;
+
+		if (packet.cmd === "token.success") {
+			this.isReady = true;
+			this.dispatchEvent("ready", packet);
+		}
+
+		if (this.options.events?.all) {
+			this.options.events.all(packet);
+		}
+
+		if (this.options.events[packet.cmd]) {
+			this.options.events[packet.cmd](packet);
+		}
+	}
+
+	sendToClient(msg: string) {
+		if (this.options.debug !== true)
+			throw "Not in debug mode, cannot use sendToClient";
+		this.websocketServer?.clients.forEach((client) => {
+			client.send(msg);
+		});
 	}
 }
