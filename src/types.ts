@@ -1,5 +1,5 @@
-export type EventListener = (...args: any[]) => void;
-export type PacketType = Array<any> | Record<string, any>;
+export type EventListener = (...args: unknown[]) => void;
+export type PacketType = Array<unknown> | Record<string, unknown>;
 
 export interface BotOptions {
 	auth: string;
