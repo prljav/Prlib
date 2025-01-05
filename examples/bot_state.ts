@@ -8,9 +8,11 @@ const bot = new Bot({
   debug: true,
   events: {
     "channel.msg": (packet: any) => {
-      if (packet.msg.message === "n" && packet.msg.from === YOUR_MAIN_ACCOUNT_USERNAME) bot.runCmd('n')
+      if (packet.msg.message === "n" && packet.msg.from === YOUR_MAIN_ACCOUNT_USERNAME && packet.msg.channel === "tell") {
+        bot.runCmd('n')
 
-      bot.runCmd(`tell ${packet.msg.from} ${packet.msg.message}`)
+        bot.runCmd(`tell ${packet.msg.from} ${packet.msg.message}`)
+      }
     },
   }
 })

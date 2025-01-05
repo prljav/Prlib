@@ -7,7 +7,7 @@ const bot = new Bot({
   debug: true,
   events: {
     "channel.msg": (packet: any) => {
-      if (packet.to === undefined) return
+      if (packet.msg.channel !== "tell") return
       bot.runCmd(`tell ${packet.msg.from} ${packet.msg.message}`)
     }
   }
