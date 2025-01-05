@@ -85,9 +85,9 @@ export class Bot extends EventManager {
 
 		if ("cmd" in packet && packet.cmd === "room.describe") {
 			try {
-				this.botState.map = packet.msg.map.join("\n");
+				this.botState.map = (packet.msg as { map: unknown[] }).map.join("\n");
 
-				const desc = packet.msg.desc;
+				const desc = (packet.msg as { desc: string }).desc;
 				const cleanedDesc = removeAnsiCodes(desc);
 				this.botState.region = cleanedDesc.split(" | ")[1].trim();
 				const numbers = cleanedDesc.match(/(?<=[ ,])\d+(?=[ ,])/g);
@@ -110,8 +110,8 @@ export class Bot extends EventManager {
 			this.options.events.all(packet);
 		}
 
-		if (this.options.events[packet.cmd]) {
-			this.options.events[packet.cmd](packet);
+		if (this.options.events[packet.cmd as string]) {
+			this.options.events[packet.cmd as string](packet);
 		}
 	}
 
