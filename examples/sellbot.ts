@@ -11,16 +11,16 @@ const bot = new Bot({
 bot.addEventListener("ready", () => {
   bot.addEventListener('update', () => {
 
-    if (bot.botstate.x == 4 && bot.botstate.y == 14) bot.runCmd('travel 2')
-    if (bot.botstate.x == 23 && bot.botstate.y == 26) {
+    if (bot.botstate.x === 4 && bot.botstate.y === 14) bot.runCmd('travel 2')
+    if (bot.botstate.x === 23 && bot.botstate.y === 26) {
       bot.runCmd('drop all')
       bot.runCmd('south')
     }
-    if (bot.botstate.x == 23 && bot.botstate.y == 27) {
+    if (bot.botstate.x === 23 && bot.botstate.y === 27) {
       bot.runCmd('get all')
       bot.runCmd('recall')
     }
-    if (bot.botstate.x == 6 && bot.botstate.y == 14) {
+    if (bot.botstate.x === 6 && bot.botstate.y === 14) {
       //selling sequence, does a circle around the nexus
       for (let i = 0; i < 3; i++) {
         bot.runCmd('e')
