@@ -1,7 +1,7 @@
 import type { CustomEventListener } from "./types";
 
 export class EventManager {
-	eventListeners: Record<string, CustomEventListener[]> = {};
+	private eventListeners: Record<string, CustomEventListener[]> = {};
 
 	addEventListener(event: string, listener: CustomEventListener) {
 		if (!this.eventListeners[event]) {

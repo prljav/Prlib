@@ -11,10 +11,10 @@ export class BotBase extends EventManager {
 	websocketServer: WebSocketServer;
 
 	startTime = 0;
-	isReady = false;
+	protected isReady = false;
 
 	options: BotOptions;
-	botState: BotState;
+	protected botState: BotState;
 
 	constructor(options: BotOptions) {
 		super();
