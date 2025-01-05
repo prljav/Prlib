@@ -1,9 +1,9 @@
-export type EventListener = (...args: unknown[]) => void;
+export type CustomEventListener = (...args: unknown[]) => void;
 export type PacketType = Array<unknown> | Record<string, unknown>;
 
 export interface BotOptions {
 	auth: string;
-	events: Record<string, EventListener>;
+	events: Record<string, CustomEventListener>;
 	debug?: boolean;
 }
 export interface BotState {
