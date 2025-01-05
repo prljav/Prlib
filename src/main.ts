@@ -1,6 +1,8 @@
 import { BotBase } from "./bot";
+import { BotOptions, BotState, PacketType } from "./types";
+import { removeAnsiCodes } from "./util";
 
-export class Bot extends BotBase {
+class Bot extends BotBase {
 	get botstate() {
 		return this.botState;
 	}
@@ -14,3 +16,5 @@ export class Bot extends BotBase {
 		return this.isReady;
 	}
 }
+
+export { Bot, BotOptions, BotState, PacketType, removeAnsiCodes };
