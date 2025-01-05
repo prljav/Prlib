@@ -14,11 +14,15 @@ export class Bot extends EventManager {
 	isReady = false;
 
 	options: BotOptions;
-	botstate: BotState;
+	botState: BotState;
+
+	get botstate() {
+		return this.botState;
+	}
 
 	constructor(options: BotOptions) {
 		super();
-		this.botstate = {
+		this.botState = {
 			x: undefined,
 			y: undefined,
 			region: undefined,
@@ -85,15 +89,15 @@ export class Bot extends EventManager {
 
 		if ("cmd" in packet && packet.cmd === "room.describe") {
 			try {
-				this.botstate.map = (packet.msg as { map: unknown[] }).map.join("\n");
+				this.botState.map = (packet.msg as { map: unknown[] }).map.join("\n");
 
 				const desc = (packet.msg as { desc: string }).desc;
 				const cleanedDesc = removeAnsiCodes(desc);
-				this.botstate.region = cleanedDesc.split(" | ")[1].trim();
+				this.botState.region = cleanedDesc.split(" | ")[1].trim();
 				const numbers = cleanedDesc.match(/(?<=[ ,])\d+(?=[ ,])/g);
-				this.botstate.x = Number(numbers[0]);
-				this.botstate.y = Number(numbers[1]);
-				this.dispatchEvent("update", this.botstate);
+				this.botState.x = Number(numbers[0]);
+				this.botState.y = Number(numbers[1]);
+				this.dispatchEvent("update", this.botState);
 			} catch (e) {
 				console.warn(`Failed to update bot state, ${e}`);
 			}
