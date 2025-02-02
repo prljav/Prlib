@@ -89,7 +89,7 @@ export class BotBase extends EventManager {
 
         const desc = (packet.msg as { desc: string }).desc;
         const cleanedDesc = removeAnsiCodes(desc);
-        this.botState.region = cleanedDesc.split(" | ")[1].trim();
+        this.botState.region = cleanedDesc.split(" | ")[1].trim().split("\n")[0].trim()
         const numbers = cleanedDesc.match(/(?<=[ ,])\d+(?=[ ,])/g);
         this.botState.x = Number(numbers[0]);
         this.botState.y = Number(numbers[1]);
